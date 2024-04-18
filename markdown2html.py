@@ -5,8 +5,10 @@ First argument is the name of the Markdown file
 Second argument is the output file name
 Requirements:
 
-If the number of arguments is less than 2: print in STDERR Usage: ./markdown2html.py README.md README.html and exit 1
-If the Markdown file doesn't exist: print in STDER Missing <filename> and exit 1
+If the number of arguments is less than 2: print in STDERR Usage:
+./markdown2html.py README.md README.html and exit 1
+If the Markdown file doesn't exist: print in STDER Missing <filename> and
+exit 1
 Otherwise, print nothing and exit 0"""
 
 import sys
@@ -26,25 +28,33 @@ if __name__ == "__main__":
         exit(1)
 
     else:
-        with open (output_name, "w") as htmlfile:
+        with open(output_name, "w") as htmlfile:
             with open(markdown_file, "r") as markdownfile:
-                lines= markdownfile.readlines()
-                for line in lines:
-                    if line.startswith("######"):
+                lines = markdownfile.readlines()
+                in_list = False
+                last_line = len(lines) - 1
+
+                for i, line in enumerate(lines):
+                    if in_list:
+                        if not line.startswith("-") or i == last_line:
+                            htmlfile.write("</ul>\n")
+                            in_list = False
+                        if line.startswith("-"):
+                            htmlfile.write("\t<li>" + line[2:-1] + "</li>\n")
+                    if not in_list and line.startswith("-"):
+                        htmlfile.write("<ul>\n")
+                        htmlfile.write("\t<li>" + line[2:-1] + "</li>\n")
+                        in_list = True
+
+                    elif line.startswith("######"):
                         htmlfile.write("<h6>" + line[7:-1] + "</h6>\n")
-                        continue
-                    if line.startswith("#####"):
+                    elif line.startswith("#####"):
                         htmlfile.write("<h5>" + line[6:-1] + "</h5>\n")
-                        continue
-                    if line.startswith("####"):
+                    elif line.startswith("####"):
                         htmlfile.write("<h4>" + line[5:-1] + "</h4>\n")
-                        continue
-                    if line.startswith("###"):
+                    elif line.startswith("###"):
                         htmlfile.write("<h3>" + line[4:-1] + "</h3>\n")
-                        continue
-                    if line.startswith("##"):
+                    elif line.startswith("##"):
                         htmlfile.write("<h2>" + line[3:-1] + "</h2>\n")
-                        continue
-                    if line.startswith("#"):
+                    elif line.startswith("#"):
                         htmlfile.write("<h1>" + line[2:-1] + "</h1>\n")
-                        continue
