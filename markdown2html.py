@@ -32,6 +32,7 @@ if __name__ == "__main__":
             with open(markdown_file, "r") as markdownfile:
                 lines = markdownfile.readlines()
                 in_list = False
+                in_ordered_list = False
 
                 for i, line in enumerate(lines):
                     if in_list:
@@ -44,6 +45,17 @@ if __name__ == "__main__":
                         htmlfile.write("<ul>\n")
                         htmlfile.write("\t<li>" + line[2:-1] + "</li>\n")
                         in_list = True
+
+                    if in_ordered_list:
+                        if not line.startswith("*"):
+                            htmlfile.write("</ol>\n")
+                            in_ordered_list = False
+                        else:
+                            htmlfile.write("\t<li>" + line[2:-1] + "</li>\n")
+                    if not in_ordered_list and line.startswith("*"):
+                        htmlfile.write("<ol>\n")
+                        htmlfile.write("\t<li>" + line[2:-1] + "</li>\n")
+                        in_ordered_list = True
 
                     elif line.startswith("######"):
                         htmlfile.write("<h6>" + line[7:-1] + "</h6>\n")
@@ -60,4 +72,8 @@ if __name__ == "__main__":
 
                 if in_list:
                     htmlfile.write("</ul>\n")
+                    in_list = False
+
+                elif in_ordered_list:
+                    htmlfile.write("</ol>\n")
                     in_list = False
