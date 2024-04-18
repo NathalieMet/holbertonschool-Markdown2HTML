@@ -32,14 +32,13 @@ if __name__ == "__main__":
             with open(markdown_file, "r") as markdownfile:
                 lines = markdownfile.readlines()
                 in_list = False
-                last_line = len(lines) - 1
 
                 for i, line in enumerate(lines):
                     if in_list:
-                        if not line.startswith("-") or i == last_line:
+                        if not line.startswith("-"):
                             htmlfile.write("</ul>\n")
                             in_list = False
-                        if line.startswith("-"):
+                        else:
                             htmlfile.write("\t<li>" + line[2:-1] + "</li>\n")
                     if not in_list and line.startswith("-"):
                         htmlfile.write("<ul>\n")
@@ -58,3 +57,7 @@ if __name__ == "__main__":
                         htmlfile.write("<h2>" + line[3:-1] + "</h2>\n")
                     elif line.startswith("#"):
                         htmlfile.write("<h1>" + line[2:-1] + "</h1>\n")
+
+                if in_list:
+                    htmlfile.write("</ul>\n")
+                    in_list = False
