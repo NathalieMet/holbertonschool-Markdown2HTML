@@ -26,4 +26,25 @@ if __name__ == "__main__":
         exit(1)
 
     else:
-        exit(0)
+        with open (output_name, "w") as htmlfile:
+            with open(markdown_file, "r") as markdownfile:
+                lines= markdownfile.readlines()
+                for line in lines:
+                    if line.startswith("######"):
+                        htmlfile.write("<h6>" + line[7:-1] + "</h6>\n")
+                        continue
+                    if line.startswith("#####"):
+                        htmlfile.write("<h5>" + line[6:-1] + "</h5>\n")
+                        continue
+                    if line.startswith("####"):
+                        htmlfile.write("<h4>" + line[5:-1] + "</h4>\n")
+                        continue
+                    if line.startswith("###"):
+                        htmlfile.write("<h3>" + line[4:-1] + "</h3>\n")
+                        continue
+                    if line.startswith("##"):
+                        htmlfile.write("<h2>" + line[3:-1] + "</h2>\n")
+                        continue
+                    if line.startswith("#"):
+                        htmlfile.write("<h1>" + line[2:-1] + "</h1>\n")
+                        continue
