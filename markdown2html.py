@@ -14,6 +14,7 @@ Otherwise, print nothing and exit 0"""
 import sys
 import os
 import re
+import hashlib
 
 if __name__ == "__main__":
 
@@ -41,6 +42,14 @@ if __name__ == "__main__":
                         line = re.sub(r"\*\*(.*?)\*\*", r"<b>\1</b>", line)
                     if line.find("__") != -1:  #si la ligne contient __
                         line = re.sub(r"\_\_(.*?)\_\_", r"<em>\1</em>", line)
+                    if line.find("[[") != -1:  #si la ligne contient [[
+                        pattern = r"\[\[(.*?)\]\]"  # Modèle pour capturer le texte entre les [[ et ]]
+                        matches = re.findall(pattern, line)  # Trouver toutes les correspondances [[texte]]
+                        for match in matches:
+                            md5_hash = hashlib.md5(match.encode()).hexdigest()  # Calculer le hash MD5 du texte capturé
+                            line = line.replace("[[{}]]".format(match), md5_hash)  # Remplacer [[texte]] par le hash MD5 correspondant
+                    if line.find("((") != -1:  #si la ligne contient ((
+                            line = line.replace("((", "").replace("))", "").replace("c", "").replace("C", "")
 
                     if in_list:
                         if not line.startswith("-"):
