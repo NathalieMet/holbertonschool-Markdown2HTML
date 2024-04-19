@@ -33,6 +33,7 @@ if __name__ == "__main__":
                 lines = markdownfile.readlines()
                 in_list = False
                 in_ordered_list = False
+                in_paragraph = False
 
                 for i, line in enumerate(lines):
                     if in_list:
@@ -41,7 +42,7 @@ if __name__ == "__main__":
                             in_list = False
                         else:
                             htmlfile.write("\t<li>" + line[2:-1] + "</li>\n")
-                    if not in_list and line.startswith("-"):
+                    elif not in_list and line.startswith("-"):
                         htmlfile.write("<ul>\n")
                         htmlfile.write("\t<li>" + line[2:-1] + "</li>\n")
                         in_list = True
@@ -52,10 +53,17 @@ if __name__ == "__main__":
                             in_ordered_list = False
                         else:
                             htmlfile.write("\t<li>" + line[2:-1] + "</li>\n")
-                    if not in_ordered_list and line.startswith("*"):
+                    elif not in_ordered_list and line.startswith("*"):
                         htmlfile.write("<ol>\n")
                         htmlfile.write("\t<li>" + line[2:-1] + "</li>\n")
                         in_ordered_list = True
+
+                    if in_paragraph:
+                        if not line.strip():  # si la ligne est vide
+                            htmlfile.write("</p>\n")
+                            in_paragraph = False
+                        else:
+                            htmlfile.write("\t\t<br />\n\t" + line.strip() + "\n")
 
                     elif line.startswith("######"):
                         htmlfile.write("<h6>" + line[7:-1] + "</h6>\n")
@@ -70,6 +78,11 @@ if __name__ == "__main__":
                     elif line.startswith("#"):
                         htmlfile.write("<h1>" + line[2:-1] + "</h1>\n")
 
+                    else:
+                        htmlfile.write("<p>\n")
+                        htmlfile.write("\t" + line.strip() + "\n")
+                        in_paragraph = True
+
                 if in_list:
                     htmlfile.write("</ul>\n")
                     in_list = False
@@ -77,3 +90,7 @@ if __name__ == "__main__":
                 elif in_ordered_list:
                     htmlfile.write("</ol>\n")
                     in_list = False
+
+                elif in_paragraph:
+                    htmlfile.write("</p>\n")
+                    in_paragraph = False
