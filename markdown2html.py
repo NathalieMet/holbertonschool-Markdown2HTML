@@ -47,7 +47,7 @@ if __name__ == "__main__":
                         htmlfile.write("\t<li>" + line[2:-1] + "</li>\n")
                         in_list = True
 
-                    if in_ordered_list:
+                    elif in_ordered_list:
                         if not line.startswith("*"):
                             htmlfile.write("</ol>\n")
                             in_ordered_list = False
@@ -58,7 +58,7 @@ if __name__ == "__main__":
                         htmlfile.write("\t<li>" + line[2:-1] + "</li>\n")
                         in_ordered_list = True
 
-                    if in_paragraph:
+                    elif in_paragraph:
                         if not line.strip():  # si la ligne est vide
                             htmlfile.write("</p>\n")
                             in_paragraph = False
@@ -79,9 +79,10 @@ if __name__ == "__main__":
                         htmlfile.write("<h1>" + line[2:-1] + "</h1>\n")
 
                     else:
-                        htmlfile.write("<p>\n")
-                        htmlfile.write("\t" + line.strip() + "\n")
-                        in_paragraph = True
+                        if line.strip():  # si la ligne n'est pas vide
+                            htmlfile.write("<p>\n")
+                            htmlfile.write("\t" + line.strip() + "\n")
+                            in_paragraph = True
 
                 if in_list:
                     htmlfile.write("</ul>\n")
