@@ -78,7 +78,7 @@ if __name__ == "__main__":
                             htmlfile.write("</p>\n")
                             in_paragraph = False
                         else:
-                            htmlfile.write("\t\t<br />\n\t" + line.strip() + "\n")
+                            htmlfile.write("\t\t<br/>\n\t" + line.strip() + "\n")
 
                     elif line.startswith("######"):
                         htmlfile.write("<h6>" + line[7:-1] + "</h6>\n")

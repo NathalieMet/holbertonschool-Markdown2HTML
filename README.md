@@ -1,16 +1,14 @@
 # My title
-- He**l**lo ((I will live in Caracas))
+- He**l**lo
 - Bye
 
 Hello
 
 I'm **a** text
-with __2 lines__ ((I will live in Caracas)) [[private]]
+with __2 lines__
 
-((I will live in Caracas)) item ((cccccccaaaaaaaaacccccccccccaaaaaaaaaa))
+((I will live in Caracas))
 
-But it's [[private]] item [[privateagain]]
+But it's [[private]]
 
 So cool!
-
-((Hello Chicago))
