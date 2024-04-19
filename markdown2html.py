@@ -43,7 +43,8 @@ if __name__ == "__main__":
                     if line.find("__") != -1:  #si la ligne contient __
                         line = re.sub(r"\_\_(.*?)\_\_", r"<em>\1</em>", line)
                     if line.find("((") != -1:  #si la ligne contient ((
-                            line = line.replace("((", "").replace("))", "").replace("c", "").replace("C", "")
+                        pattern = r"\(\((.*?)\)\)"  # Modèle pour capturer le texte entre les (( et ))
+                        line = re.sub(pattern, lambda match: match.group(1).replace("c", "").replace("C", ""), line)
                     if line.find("[[") != -1:  #si la ligne contient [[
                         pattern = r"\[\[(.*?)\]\]"  # Modèle pour capturer le texte entre les [[ et ]]
                         matches = re.findall(pattern, line)  # Trouver toutes les correspondances [[texte]]
@@ -78,7 +79,7 @@ if __name__ == "__main__":
                             htmlfile.write("</p>\n")
                             in_paragraph = False
                         else:
-                            htmlfile.write("\t\t<br/>\n\t" + line.strip() + "\n")
+                            htmlfile.write("\t\t<br />\n\t" + line.strip() + "\n")
 
                     elif line.startswith("######"):
                         htmlfile.write("<h6>" + line[7:-1] + "</h6>\n")
