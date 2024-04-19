@@ -13,6 +13,7 @@ Otherwise, print nothing and exit 0"""
 
 import sys
 import os
+import re
 
 if __name__ == "__main__":
 
@@ -36,6 +37,11 @@ if __name__ == "__main__":
                 in_paragraph = False
 
                 for i, line in enumerate(lines):
+                    if line.find("**") != -1:  #si la ligne contient **
+                        line = re.sub(r"\*\*(.*?)\*\*", r"<b>\1</b>", line)
+                    if line.find("__") != -1:  #si la ligne contient __
+                        line = re.sub(r"\_\_(.*?)\_\_", r"<em>\1</em>", line)
+
                     if in_list:
                         if not line.startswith("-"):
                             htmlfile.write("</ul>\n")
